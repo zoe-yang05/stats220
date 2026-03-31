@@ -1,0 +1,93 @@
+---
+title: My dynamic report
+output: html_fragment
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo=FALSE, message=FALSE, warning=FALSE, error=FALSE)
+
+```
+
+```{css}
+@import url('https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&display=swap');
+h2 {
+  color: #fa7e1e;
+  font-family: sans-serif;
+  border-bottom: 2px solid #d62976;
+}
+p {
+  font-size: 1.1em;
+  line-height: 1.5;
+}
+```
+
+## A dynamic report on survey responses relating to giveaways which show up on Instagram feeds
+
+
+```{r}
+library(tidyverse)
+
+ #Load data
+logged_data <- read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vQOFTjOuy0d35pxc3I1CCQsA8V2XJyNknUL51Dca4y0jD6_HKqn3230diO1yNCK4HRJw-kNIAaT-6QI/pub?output=csv")
+
+#Renaming data
+latest_data <- logged_data %>%
+  rename(date = "What date did the giveaway post show up on your feed?",
+         time = "When was this observation made? (24hr format)",
+         scroll = "Roughly how long were you scrolling for before it appeared?",
+         owner = "Who posted the giveaway?",
+         prize = "What is the category of the prize? (Choose all that apply)",
+         entry_requirements = "What were the requirements of entry? (Choose all that apply)",
+         feed = "Why did it show up on your feed?",
+         interest = "How interested were you to enter?",
+         entery = "Did you enter the giveaway?",
+         no_entry = "If you didn't enter, what was your reasoning?")
+
+#Chart 1 - Exploring entry requirement data
+Chart_1 <- latest_data %>% 
+  #Split multi-choice data
+separate_longer_delim(entry_requirements, delim = ", ") %>% 
+  ggplot() +
+  geom_bar(aes(y = entry_requirements),
+           fill = "#833AB4") +
+  labs(title = "Sign me up!",
+       subtitle = "Comparing the popularity of different entry requirements used by giveaway organisers",
+       caption = "Source: STATS220 Survey",
+       x = "Number of giveaways",
+       y = "Entry requirements") 
+
+print(Chart_1)
+```
+
+
+```{r}
+#Chart 2 - Exploring time spent scrolling data
+Chart_2 <- latest_data %>%
+  # Define the exact order desired from left to right
+  mutate(scroll = factor(scroll, levels = c("0 - 1 minute", "1 - 5 minutes", "5 - 10 minutes", "10 - 20 minutes", "20+ minutes"))) %>% 
+  ggplot() +
+  geom_bar(aes(x = scroll),
+           fill = "#d62976") +
+  labs(title = "It's time to scroll!",
+       subtitle = "Comparing the time spent scrolling to the number of giveaways that show up on feed",
+       caption = "Source: STATS220 Survey",
+       x = "Time spent scrolling",
+       y = "Number of giveaways") 
+
+print(Chart_2)
+
+#Summary Value: Maximum number of entry requirements founds
+df <- latest_data %>% 
+  mutate(count_vector = str_count(as.character(entry_requirements), ",") + 1) 
+count_entry_requirements <- df$count_vector
+
+#Summary Value: Minimum number of entry requirements founds
+df <- latest_data %>% 
+  mutate(count_vector = str_count(as.character(entry_requirements), ",") + 1) 
+count_entry_requirements <- df$count_vector
+
+```
+
+The maximum number of requirements by a giveaway is: `r max(df$count_vector, na.rm = TRUE)`
+
+The minimum number of requirements by a giveawayis: `r min(df$count_vector, na.rm = TRUE)`
