@@ -1,0 +1,84 @@
+---
+title: Giveaway Time! 
+output: html_document
+---
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo=FALSE, message=FALSE, warning=FALSE, error=FALSE)
+```
+
+```{js}
+$(function() {
+  $(".level2").css('visibility', 'hidden');
+  $(".level2").first().css('visibility', 'visible');
+  $(".container-fluid").height($(".container-fluid").height() + 300);
+  $(window).on('scroll', function() {
+    $('h2').each(function() {
+      var h2Top = $(this).offset().top - $(window).scrollTop();
+      var windowHeight = $(window).height();
+      if (h2Top >= 0 && h2Top <= windowHeight / 2) {
+        $(this).parent('div').css('visibility', 'visible');
+      } else if (h2Top > windowHeight / 2) {
+        $(this).parent('div').css('visibility', 'hidden');
+      }
+    });
+  });
+})
+```
+
+```{css, echo=FALSE}
+.figcaption {display: none}
+@import url('https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap');
+h1, h2, h3{
+font-family: 'Playfair Display', cursive;
+color: #1b4d5a
+}
+body {
+  background-color: #f4f7f6;
+  font-family: 'Lato';
+  font-size: 14px;
+  color: #0b1d33
+}
+```
+
+An analysis into Instagram's ability to deliver a specific category into my feed using giveaway posts.
+
+
+## Opps... How long have I been scolling?
+
+Data collection occurred at various hours of the day. 
+
+![Bar chart showing the frequency of giveaways recorded by hour](plot1.png)
+
+
+Based on this, you can see my phone usage habits. The quick scrolls occur just when I wake up or as I wait for a lecture to start. The longer scrolls then correlate with my breaks, either after lectures, around mealtimes or just a study break. The most frequent number of giveaways recorded correlate most with waiting for lectures to start, hence the short scroll time, or with an afternoon slump once I've finished my lectures for the day.
+
+
+## Interest in Different Categories of Prizes
+
+My interests in the different categories of prizes were more consistent for some than others.
+
+![Box plot showing the interest of different categories of prizes](plot2.png)
+
+
+In some categories such as travel, the prizes were much better targeted for me. Other categories had some wins and some misses such as kitchenware and cash/giftcard, depending on whether the item or brand appealed to me or not. The category that I had the least interest in was beauty, however Instagram seems to have though I was interested as shown by the multiple datapoints in the category.
+
+
+## Requirements of Entry and Whether Giveaway was Entered into
+
+Understandably Instagram pages running these giveaways, want to increase their umber of followers to hopefully increase the success of their business or brand.
+
+![Bar Chart showing the frequency of different entry requirements](plot3.png)
+
+
+Giveaways mainly required people to follow the account and tag a friend, both of which increase their brand visibility which hopefully leads to increased revenue. Liking a post is also quite a popular requirement which implies to Instagram that a post is popular which means that Instagram will be more likely to have it appear in other users’ feeds, further increasing brand visibility. Whilst the number of entries into the giveaways is low, this data is already implying that some are more likely to discourage users from entering the giveaway, such as sharing the post, whether in general, or on user's stories.
+
+
+## Conclusion
+
+To conclude, I've learnt that when instagram thinks you have an interest in a topic, it will focus on targeting it to your feed, even with decreasing interest.
+
+
+![Cat scrolling in bed](https://i.imgflip.com/7gi2hz.jpg)
